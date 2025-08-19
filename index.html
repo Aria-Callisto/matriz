@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Matriz do Destino - Tarot</title>
+<link rel="stylesheet" href="style.css">
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: linear-gradient(291deg, #000000, #510000);
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+  overflow-x: hidden;
+}
+
+.container {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 20px 30px;
+  border-radius: 12px;
+  max-width: 500px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+input, button {
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+}
+
+input {
+  background: #fff;
+  color: #000;
+  text-align: center;          
+  padding: 12px 0;             
+  font-size: 16px;
+  border-radius: 8px;
+  border: 2px solid #ccc;
+  outline: none;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+input::placeholder {
+  text-align: center;          
+  color: #999;
+}
+
+input:focus {
+  border-color: #ff69b4;
+  box-shadow: 0 0 5px rgba(255,105,180,0.5);
+}
+
+button {
+  background: black;
+  color: white;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+button:hover {
+  background: #370013;
+}
+
+.hidden { display: none; }
+
+/* Confete */
+#cartasConfete {
+  position: fixed;
+  top:0; left:0;
+  width:100%; height:100%;
+  pointer-events:none;
+  overflow:hidden;
+  z-index:1000;
+}
+
+.confete {
+  position: absolute;
+  width: 40px;
+  opacity:0.8;
+  animation: flutuarConfete linear infinite;
+}
+
+@keyframes flutuarConfete { 
+  0%{transform: translateY(-50px) rotate(0deg);} 
+  100%{transform: translateY(110vh) rotate(360deg);} 
+}
+
+/* Resultado */
+.resultado { margin-top: 25px; text-align: center; }
+#destino-texto {
+  font-size: 22px;
+  animation: brilho 1.5s infinite alternate;
+}
+
+@keyframes brilho {
+  from { text-shadow: 0 0 5px #fff; }
+  to { text-shadow: 0 0 20px #ff69b4; }
+}
+
+/* Arcano individual */
+.arcano {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 15px;
+  perspective: 1000px;
+  display: flex;
+  margin: 10px;
+}
+
+.arcano img {
+  margin-top: 5px;
+  width: 120px;
+  border-radius: 8px;
+}
+
+.flip-card {
+  width: 120px;
+  height: 180px;
+  cursor: pointer;
+  position: relative;
+}
+
+.flip-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.8s;
+  transform-style: preserve-3d;
+}
+
+.flip-card.flipped .flip-inner {
+  transform: rotateY(180deg);
+}
+
+.flip-front, .flip-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: 10px;
+}
+
+.flip-front {
+  transform: rotateY(180deg);
+}
+
+.flip-back img, .flip-front img {
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+}
+
+h1 {
+ font-size: 1.8em;
+}
+
+strong {
+color: yellow;
+}
+</style>
+</head>
+<body>
+
+<div id="cartasConfete"></div>
+
+<div class="container">
+  <h1>✨ Método Ária ✨</h1>
+  <p>Descubra seus três arcanos principais:</p>
+
+  <form id="tarotForm">
+    <input type="text" id="nome" placeholder="Nome" required>
+    <input type="date" id="data" placeholder="Data de Nascimento" required>
+    <input type="number" id="number" placeholder="Seu número de celular (com DDD)" required>
+    <button type="submit">Gerar Arcanos</button>
+  </form>
+
+  <div id="resultado" class="resultado hidden">
+    <h2 id="destino-texto">✨ Seus Arcanos foram revelados ✨</h2>
+    
+    <div class="arcano">
+      <p id="arcanoPessoal">Arcano Pessoal:</p>
+      <div class="flip-card" id="cardPessoal">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <img id="imgPessoal" src="" alt="">
+          </div>
+          <div class="flip-back">
+            <img src="images/back_card.png" alt="Carta virada">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="arcano">
+      <p id="arcanoAscendente">Arcano Ascendente:</p>
+      <div class="flip-card" id="cardAscendente">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <img id="imgAscendente" src="" alt="">
+          </div>
+          <div class="flip-back">
+            <img src="images/back_card.png" alt="Carta virada">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="arcano">
+      <p id="arcanoCentral">Arcano Central:</p>
+      <div class="flip-card" id="cardCentral">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <img id="imgCentral" src="" alt="">
+          </div>
+          <div class="flip-back">
+            <img src="images/back_card.png" alt="Carta virada">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Chamada de marketing -->
+<section id="call-to-action" style="text-align: center; margin-top: 50px; padding: 30px; background: #111; color: #fff; border-radius: 15px;">
+    <h1 style="font-size: 2rem; margin-bottom: 20px;">
+        🔮 <strong>Método Ária</strong> - Análise de <em>Matriz do Destino</em>
+    </h1>
+    <p style="font-size: 1.1rem; line-height: 1.6; max-width: 750px; margin: 0 auto;">
+        Nem sempre eu tive a <strong>confiança</strong>, o <strong>empoderamento</strong> e a <strong>autonomia do Imperador</strong>. Trabalhando com redes sociais desde os 14 anos, passei muito tempo escondida, com vergonha e insegurança para me expor.  
+        Meu projeto mais forte foi meu trabalho: cerca de <strong>1 ano de criação</strong>, <strong>mais de 18 milhões de views</strong> e uma jornada onde me arrisquei a ser vista de verdade.  
+        <br><br>Não foi fácil, pois vieram desafios, dúvidas e medo, mas permaneci firme, como um Imperador que não se deixa dominar pela covardia, sempre ambiciosa e focada nas minhas metas. Hoje, me sinto <strong>plena e realizada</strong> com quem me tornei.
+    </p>
+
+    <p style="font-size: 1.1rem; line-height: 1.6; max-width: 700px; margin: 20px auto;"><br>
+        Por isso falo tanto de <strong>Arcanos e Matriz</strong>: porque só tive esse <em>BOOM</em> e esse <em>GLOW-UP</em> na minha vida depois que fiz uma análise profunda da minha <strong>Matriz do Destino</strong> e entendi como meus Arcanos se manifestavam na minha vida e como eu poderia ativá-los pra conquistar o que eu mais desejava.
+    </p>
+
+    <p style="font-size: 1.1rem; line-height: 1.6; max-width: 700px; margin: 20px auto; color:red"><br>
+        <strong>Ao analisar sua Matriz do Destino comigo, você irá descobrir:</strong> <br>
+        <br><br><strong style="color:orangered">– quais padrões te sabotam (e quem é o verdadeiro “culpado” da sua vida estar assim)</strong><br>
+        <br><strong style="color:white">– por que você ainda não conquistou aquilo que deseja</strong><br>
+        <br><strong style="color:orangered">– o que você precisa fazer hoje para chegar onde você quer na sua vida<br></strong>
+        <br><br><strong style="color:white">Meu objetivo é que você, assim como eu, também aprenda a superar os medos e <strong style="color:#1FD11F">extrair seu potencial máximo.</strong> Em tempo recorde.
+    </p>
+    
+	<p style="font-size: 1.1rem; font-weight: bold; margin: 20px auto;">
+        ✨ <strong>Você NÃO está aqui nessa página por acaso.</strong> <br><br><br>Vem comigo que eu vou te ajudar a encontrar o <em>poder que existe dentro de você</em>, e juntos vamos <strong>desbloquear teu potencial máximo</strong>.
+    </p>
+	<br><p style="font-size: 1.1rem; font-weight: bold; margin: 20px auto;">
+        <strong>Você e eu sabemos</strong> que você pode </em>MUITO mais...<strong></strong>
+    </p>
+
+    <br><button style="background: #ff0077; color: #fff; font-size: 1.2rem; padding: 15px 30px; border: none; border-radius: 12px; cursor: pointer; margin-top: 20px; transition: 0.3s;">
+        <strong>Quero Desbloquear Meu Potencial Agora 🔥</strong>
+    </button>
+</section>
+
+
+  </div>
+</div>
+
+<audio id="flip-sound" src="flip-sound.mp3"></audio>
+<script src="script.js"></script>
+</body>
+</html>
