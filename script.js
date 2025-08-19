@@ -188,7 +188,7 @@ if (form) {
     const data = document.getElementById("data")?.value;
     if (!nome || !data) return;
 
-    const [ano, mes, dia] = data.split("-").map(Number);
+    const [dia, mes, ano] = data.split("/").map(Number);
 
     const arcanos = calcularArcanos(dia, mes, ano);
 
@@ -232,4 +232,22 @@ if (form) {
   });
 } else {
   console.warn('Formulário "tarotForm" não encontrado no DOM.');
+}
+
+// Máscara para data (dd/mm/aaaa)
+const inputData = document.getElementById("data");
+if (inputData) {
+  inputData.addEventListener("input", function (e) {
+    let v = e.target.value.replace(/\D/g, ""); // remove tudo que não for número
+    if (v.length > 8) v = v.slice(0, 8); // limita a 8 dígitos
+    let formatado = "";
+    if (v.length > 4) {
+      formatado = v.replace(/(\d{2})(\d{2})(\d{0,4})/, "$1/$2/$3");
+    } else if (v.length > 2) {
+      formatado = v.replace(/(\d{2})(\d{0,2})/, "$1/$2");
+    } else {
+      formatado = v;
+    }
+    e.target.value = formatado;
+  });
 }
