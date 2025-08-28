@@ -224,6 +224,17 @@ if (form) {
       // Revelar seção de resultado
       document.getElementById("resultado")?.classList.remove("hidden");
 
+      // 👉 Novo: esconder inputs e transformar botão em "Refazer"
+      document.getElementById("nome").style.display = "none";
+      document.getElementById("data").style.display = "none";
+      document.getElementById("number").style.display = "none";
+
+      const btn = form.querySelector("button[type='submit']");
+      if (btn) {
+        btn.textContent = "Refazer";
+        btn.onclick = () => { window.location.href = "index.html"; };
+      }
+
       // Ativar flip ao clicar no verso de cada carta
       ativarFlip("cardPessoal");
       ativarFlip("cardAscendente");
