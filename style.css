@@ -1,3 +1,8 @@
+html, body {
+  max-width: 100%;
+  overflow-x: hidden; 
+}
+
 body {
   font-family: Arial, sans-serif;
   background: linear-gradient(291deg, #000000, #510000);
@@ -7,7 +12,6 @@ body {
   align-items: center;
   min-height: 100vh;
   margin: 0;
-  overflow-x: hidden;
 }
 
 .container {
@@ -27,7 +31,6 @@ form {
   margin-top: 20px;
 }
 
-/* Inputs e placeholders centralizados */
 input, button {
   padding: 10px;
   border: none;
@@ -38,8 +41,8 @@ input, button {
 input {
   background: #fff;
   color: #000;
-  text-align: center;          /* centraliza texto digitado */
-  padding: 12px 0;             /* centraliza verticalmente */
+  text-align: center;          
+  padding: 12px 0;             
   font-size: 16px;
   border-radius: 8px;
   border: 2px solid #ccc;
@@ -48,12 +51,12 @@ input {
 }
 
 input::placeholder {
-  text-align: center;          /* centraliza placeholder */
-  color: #999;                 /* cor clara */
+  text-align: center;          
+  color: #999;                 
 }
 
 input:focus {
-  border-color: #ff69b4;       /* destaque ao focar */
+  border-color: #ff69b4;       
   box-shadow: 0 0 5px rgba(255,105,180,0.5);
 }
 
@@ -68,32 +71,74 @@ button:hover {
   background: #370013;
 }
 
-.hidden { display: none; }
+.hidden { display: none !important; }
 
-/* Confete */
-#cartasConfete {
+/* --- TELA DE CARREGAMENTO SUAVE --- */
+#loading-screen {
   position: fixed;
-  top:0; left:0;
-  width:100%; height:100%;
-  pointer-events:none;
-  overflow:hidden;
-  z-index:1000;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #000000;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  opacity: 0; 
+  transition: opacity 0.8s ease-in-out; 
 }
 
-.confete {
-  position: absolute;
-  width: 40px;
-  opacity:0.8;
-  animation: flutuarConfete linear infinite;
+#loading-screen.visible {
+  opacity: 1; 
 }
 
-@keyframes flutuarConfete { 
-  0%{transform: translateY(-50px) rotate(0deg);} 
-  100%{transform: translateY(110vh) rotate(360deg);} 
+#loading-gif {
+  width: 80%;
+  max-width: 350px; 
+  border-radius: 12px;
+  margin-bottom: 30px;
+  box-shadow: 0 0 25px rgba(255, 105, 180, 0.3); 
 }
 
-/* Resultado */
-.resultado { margin-top: 25px; text-align: center; }
+.progress-container {
+  width: 80%;
+  max-width: 400px;
+  height: 25px;
+  background-color: #222;
+  border-radius: 15px;
+  overflow: hidden;
+  border: 2px solid #ff69b4;
+}
+
+#progress-bar {
+  width: 0%;
+  height: 100%;
+  background-color: #ff69b4;
+  transition: width 0.1s linear; 
+}
+
+#progress-text {
+  color: #fff;
+  font-size: 1.5rem;
+  margin-top: 15px;
+  font-weight: bold;
+  font-family: monospace;
+}
+
+/* --- RESULTADO SUAVE --- */
+.resultado { 
+  margin-top: 25px; 
+  text-align: center; 
+  opacity: 0; 
+  transition: opacity 1.5s ease-in-out; 
+}
+
+.resultado.visible {
+  opacity: 1;
+}
+
 #destino-texto {
   font-size: 22px;
   animation: brilho 1.5s infinite alternate;
@@ -111,7 +156,6 @@ button:hover {
   align-items: center;
   margin-top: 15px;
   perspective: 1000px;
-  display: flex;
   margin: 10px;
 }
 
@@ -161,4 +205,29 @@ button:hover {
 
 h1 {
  font-size: 1.8em;
+}
+
+/* --- ESTILO DO MOCKUP --- */
+.ebook-large {
+    width: 210%; 
+    max-width: 800px; 
+    display: block;
+    margin-left: -57%; 
+    margin-top: -60px;
+    margin-bottom: -30px;
+    border-radius: 13px;
+}
+
+/* --- ANIMAÇÃO DO CALL TO ACTION --- */
+.cta-oculto {
+  display: none !important;
+}
+
+.cta-animado {
+  animation: subirSuave 1.5s ease-in-out forwards;
+}
+
+@keyframes subirSuave {
+  0% { opacity: 0; transform: translateY(40px); }
+  100% { opacity: 1; transform: translateY(0); }
 }

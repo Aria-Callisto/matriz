@@ -4,6 +4,24 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Método Ária</title>
+
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+
+// ATENÇÃO RAFA: SUBSTITUA O TEXTO ABAIXO PELO NÚMERO DO SEU PIXEL
+fbq('init', '3003740953158547'); 
+fbq('track', 'PageView'); // Marca quem visitou a página
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=SEU_PIXEL_ID_AQUI&ev=PageView&noscript=1"
+/></noscript>
 <link rel="stylesheet" href="style.css">
 <style>
 body {
@@ -75,29 +93,7 @@ button:hover {
   background: #370013;
 }
 
-.hidden { display: none; }
-
-/* Confete */
-#cartasConfete {
-  position: fixed;
-  top:0; left:0;
-  width:100%; height:100%;
-  pointer-events:none;
-  overflow:hidden;
-  z-index:1000;
-}
-
-.confete {
-  position: absolute;
-  width: 40px;
-  opacity:0.8;
-  animation: flutuarConfete linear infinite;
-}
-
-@keyframes flutuarConfete { 
-  0%{transform: translateY(-50px) rotate(0deg);} 
-  100%{transform: translateY(110vh) rotate(360deg);} 
-}
+.hidden { display: none !important; }
 
 /* Resultado */
 .resultado { margin-top: 25px; text-align: center; }
@@ -118,7 +114,6 @@ button:hover {
   align-items: center;
   margin-top: 15px;
   perspective: 1000px;
-  display: flex;
   margin: 10px;
 }
 
@@ -177,16 +172,23 @@ color: yellow;
 </head>
 <body>
 
-<div id="cartasConfete"></div>
+<div id="loading-screen" class="hidden">
+  <img src="images/aria.gif" alt="Analisando Destino..." id="loading-gif">
+  
+  <div class="progress-container">
+    <div id="progress-bar"></div>
+  </div>
+  <p id="progress-text">0%</p>
+  <p style="color: #ff69b4; margin-top: 5px; font-size: 0.9rem;">Conectando com a sua Matriz...</p>
+</div>
 
 <div class="container">
-  <h1>✨ Método Ária ✨</h1>
-  <p>Descubra seus três arcanos principais:</p>
+  <h1>✨Método Ária ✨</h1>
+  <p>Descubra seus arcanos principais:</p>
 
   <form id="tarotForm">
     <input type="text" id="nome" placeholder="Nome" required>
     <input type="text" id="data" placeholder="Data de Nascimento" required>
-    <input type="number" id="number" placeholder="Seu número de celular (com DDD)" required>
     <button type="submit">Gerar Arcanos</button>
   </form>
 
@@ -207,12 +209,12 @@ color: yellow;
       </div>
     </div>
 
-    <div class="arcano">
-      <p id="arcanoAscendente">Arcano Ascendente:</p>
-      <div class="flip-card" id="cardAscendente">
+    <div class="arcano hidden" id="boxComplementar1">
+      <p id="arcanoComplementar1">Arcano Complementar:</p>
+      <div class="flip-card" id="cardComplementar1">
         <div class="flip-inner">
           <div class="flip-front">
-            <img id="imgAscendente" src="" alt="">
+            <img id="imgComplementar1" src="" alt="">
           </div>
           <div class="flip-back">
             <img src="images/back_card.png" alt="Carta virada">
@@ -221,12 +223,12 @@ color: yellow;
       </div>
     </div>
 
-    <div class="arcano">
-      <p id="arcanoCentral">Arcano Central:</p>
-      <div class="flip-card" id="cardCentral">
+    <div class="arcano hidden" id="boxComplementar2">
+      <p id="arcanoComplementar2">Segundo Arcano Complementar:</p>
+      <div class="flip-card" id="cardComplementar2">
         <div class="flip-inner">
           <div class="flip-front">
-            <img id="imgCentral" src="" alt="">
+            <img id="imgComplementar2" src="" alt="">
           </div>
           <div class="flip-back">
             <img src="images/back_card.png" alt="Carta virada">
@@ -235,44 +237,53 @@ color: yellow;
       </div>
     </div>
 
-    <!-- Chamada de marketing -->
-<section id="call-to-action" style="text-align: center; margin-top: 50px; padding: 30px; background: #111; color: #fff; border-radius: 15px;">
-    <h1 style="font-size: 2rem; margin-bottom: 20px;">
-        🔮 <strong>Método Ária</strong> - Análise de <em>Matriz do Destino</em>
-    </h1>
-    <p style="font-size: 1.1rem; line-height: 1.6; max-width: 750px; margin: 0 auto;">
-        Nem sempre eu tive a <strong>confiança</strong>, o <strong>empoderamento</strong> e a <strong>autonomia do Imperador</strong>. Trabalhando com redes sociais desde os 14 anos, passei muito tempo escondida, com vergonha e insegurança para me expor.  
-        Meu projeto mais forte foi meu trabalho: cerca de <strong>1 ano de criação</strong>, <strong>mais de 18 milhões de views</strong> e uma jornada onde me arrisquei a ser vista de verdade.  
-        <br><br>Não foi fácil, pois vieram desafios, dúvidas e medo, mas permaneci firme, como um Imperador que não se deixa dominar pela covardia, sempre ambiciosa e focada nas minhas metas. Hoje, me sinto <strong>plena e realizada</strong> com quem me tornei.
-    </p>
-
-    <p style="font-size: 1.1rem; line-height: 1.6; max-width: 700px; margin: 20px auto;"><br>
-        Por isso falo tanto de <strong>Arcanos e Matriz</strong>: porque só tive esse <em>BOOM</em> e esse <em>GLOW-UP</em> na minha vida depois que fiz uma análise profunda da minha <strong>Matriz do Destino</strong> e entendi como meus Arcanos se manifestavam na minha vida e como eu poderia ativá-los pra conquistar o que eu mais desejava.
-    </p>
-
-    <p style="font-size: 1.1rem; line-height: 1.6; max-width: 700px; margin: 20px auto; color:red"><br>
-        <strong>Ao analisar sua Matriz do Destino comigo, você irá descobrir:</strong> <br>
-        <br><br><strong style="color:orangered">– quais padrões te sabotam (e quem é o verdadeiro “culpado” da sua vida estar assim)</strong><br>
-        <br><strong style="color:white">– por que você ainda não conquistou aquilo que deseja</strong><br>
-        <br><strong style="color:orangered">– o que você precisa fazer hoje para chegar onde você quer na sua vida<br></strong>
-        <br><br><strong style="color:white">Meu objetivo é que você, assim como eu, também aprenda a superar os medos e <strong style="color:#1FD11F">extrair seu potencial máximo.</strong> Em tempo recorde.
-    </p>
+    <section id="call-to-action" class="cta-oculto" style="text-align: center;margin-top: 50px;margin-left: -31px;margin-right: -33px;padding: 30px;background: #111;color: #fff;border-radius: 15px;">
     
-	<p style="font-size: 1.1rem; font-weight: bold; margin: 20px auto;">
-        ✨ <strong>Você NÃO está aqui nessa página por acaso.</strong> <br><br><br>Vem comigo que eu vou te ajudar a encontrar o <em>poder que existe dentro de você</em>, e juntos vamos <strong>desbloquear teu potencial máximo</strong>.
-    </p>
-	<br><p style="font-size: 1.1rem; font-weight: bold; margin: 20px auto;">
-        <strong>Você e eu sabemos</strong> que você pode </em>MUITO mais...<strong></strong>
-    </p>
+        <img id="mockup-ebook" src="" alt="Capa do Ebook" class="ebook-large">
 
-    <br><button 
-    onclick="window.location.href='https://oraculo-de-aria.pay.yampi.com.br/r/CM9KO6CXSD'" 
-    style="background: #ff0077; color: #fff; font-size: 1.2rem; padding: 15px 30px; border: none; border-radius: 12px; cursor: pointer; margin-top: 20px; transition: 0.3s;">
-    <strong>Quero Desbloquear Meu Potencial Agora 🔥</strong>
-</button>
+        <h1 style="font-size: 2rem; margin-bottom: 20px;">
+            Matriz do Olimpo: <strong>Edição de Boas-Vindas - <em id="span-nome-arcano" style="color: #ff69b4;">[Nome do Arcano] ✨</em> </strong>
+        </h1>
+        <p style="font-size: 1.1rem; line-height: 1.6; max-width: 750px; margin: 0 auto;">
+            Deixa eu te falar <strong id="span-nome-pessoa" style="color: #ff69b4;">[Nome]</strong>, nem sempre tive a <strong>confiança</strong>, o <strong>empoderamento</strong> e a <strong>autonomia do Imperador</strong>. Trabalhando com redes sociais desde os 14 anos, passei muito tempo escondida, com vergonha e insegurança para me expor. Meu projeto mais forte foi o meu trabalho: Cerca de <strong>2 anos de criação</strong>, <strong>mais de 40 milhões de visualizações</strong> e uma jornada onde me arrisquei a ser vista de verdade.  
+            <br><br>Não foi fácil, pois vieram desafios, dúvidas e medo, mas permaneci firme, como um Imperador que não se deixa dominar pela covardia, sempre ambiciosa e focada nas minhas metas. Hoje, me sinto <strong>decidida e confiante</strong> com quem me tornei.
+        </p>
 
-</section>
+        <p style="font-size: 1.1rem; line-height: 1.6; max-width: 700px; margin: 20px auto;"><br>
+            Por isso falo tanto de <strong>Arcanos e Matriz</strong>: porque só tive esse <em>BOOM</em> e esse <em>GLOW UP</em> na minha vida depois que fiz uma análise profunda do meu Arcano Pessoal e Matriz do Destino e entendi como essas energias se manifestavam na minha vida e como eu poderia ativá-las para conquistar o que eu mais desejava.
+        </p>
 
+        <p style="font-size: 1.1rem; font-weight: bold; margin: 20px auto;">
+            ✨ E a verdade é que você não está aqui por acaso…
+        </p>
+
+        <p style="font-size: 1.1rem; line-height: 1.6; max-width: 700px; margin: 20px auto;">
+            Se você sente que nada muda na sua vida, o motivo pode ser desconfortável: <strong>Você está sendo dominada pelas sombras do seu Arcano Pessoal.</strong><br><br>
+            São comportamentos inconscientes e autossabotagens que travam a sua voz e seus caminhos. Por outro laaaado... Assim como eu ativei o Imperador para sair dos bastidores e conquistar meu império, você também pode usar o seu Arcano Pessoal para retomar o brilho da sua história.
+        </p>
+
+        <p style="font-size: 1.1rem; line-height: 1.6; max-width: 700px; margin: 20px auto; color:red">
+            <strong>🔥 O seu primeiro passo rumo a sua melhor versão começa AGORA...</strong> <br>
+            <br><strong style="color:white">Eu condensei anos de estudos, vivências e os segredos do seu Arcano Pessoal nesta Edição de Boas-Vindas. Considere isso um presente simbólico, ONDE VOCÊ VAI DESCOBRIR:</strong><br>
+            <br><strong style="color:orangered">✨ Quais figuras famosas ressoam com a potência do seu Arcano para entender, na prática, como essa energia se manifesta no mundo.</strong><br>
+            <br><strong style="color:white">✨ As simbologias ocultas do seu Arcano Pessoal e os segredos que elas revelam para a sua vida.</strong><br>
+            <br><strong style="color:orangered">✨ As suas sombras que podem te levar aos mesmos erros e padrões que hoje travam os seus caminhos.</strong><br>
+            <br><strong style="color:white">🔥 Como acessar as virtudes do seu Arcano Pessoal para deixar de viver no automático e começar a protagonizar a sua própria realidade.</strong>
+        </p>
+
+        <p style="font-size: 1.1rem; line-height: 1.6; max-width: 700px; margin: 20px auto;">
+            Eu condensei anos de estudos, vivências e os segredos do seu Arcano Pessoal nesta Edição de Boas-Vindas. Considere isso um presente simbólico, que ficará disponível para pouquíssimas pessoas.
+        </p>
+        
+        <br><p style="font-size: 1.1rem; font-weight: bold; margin: 20px auto;">
+            <strong>Você e eu sabemos</strong> que você pode <em>MUITO mais...</em>
+        </p>
+
+        <br><button id="btn-compra" style="background: #ff0077; color: #fff; font-size: 1.2rem; padding: 15px 30px; border: none; border-radius: 12px; cursor: pointer; margin-top: 20px; transition: 0.3s;">
+            <strong>Quero Desbloquear Meu Potencial Agora 🔥</strong>
+        </button>
+
+    </section>
 
   </div>
 </div>
@@ -281,4 +292,3 @@ color: yellow;
 <script src="script.js"></script>
 </body>
 </html>
-

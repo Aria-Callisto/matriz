@@ -4,138 +4,83 @@
 const totalArcanos = 22;
 const pastaImagens = 'images/';
 
-// Mapa dos Arcanos 1..22 (22 = O Louco)
 const nomesArcanos = {
-  1:  "O Mago",
-  2:  "A Sacerdotisa",
-  3:  "A Imperatriz",
-  4:  "O Imperador",
-  5:  "O Hierofante",
-  6:  "Os Enamorados",
-  7:  "O Carro",
-  8:  "A Justiça",
-  9:  "O Eremita",
-  10: "A Roda da Fortuna",
-  11: "A Força",
-  12: "O Enforcado",
-  13: "A Morte",
-  14: "A Temperança",
-  15: "O Diabo",
-  16: "A Torre",
-  17: "A Estrela",
-  18: "A Lua",
-  19: "O Sol",
-  20: "O Julgamento",
-  21: "O Mundo",
-  22: "O Louco"
+  1:  "O Mago", 2:  "A Sacerdotisa", 3:  "A Imperatriz", 4:  "O Imperador",
+  5:  "O Hierofante", 6:  "Os Enamorados", 7:  "O Carro", 8:  "A Justiça",
+  9:  "O Eremita", 10: "A Roda da Fortuna", 11: "A Força", 12: "O Enforcado",
+  13: "A Morte", 14: "A Temperança", 15: "O Diabo", 16: "A Torre",
+  17: "A Estrela", 18: "A Lua", 19: "O Sol", 20: "O Julgamento",
+  21: "O Mundo", 22: "O Louco"
+};
+
+const linksKiwify = {
+  1: "https://pay.kiwify.com.br/g9eCxH2", // MAGO
+  2: "https://pay.kiwify.com.br/u1vydTB", // SACERDOTISA
+  3: "https://pay.kiwify.com.br/JbGRyIb", // IMPERATRIZ
+  4: "https://pay.kiwify.com.br/CjctoLz", // IMPERADOR
+  5: "https://pay.kiwify.com.br/gC3u3pE", // PAPA (Hierofante)
+  6: "https://pay.kiwify.com.br/5KbziRk", // ENAMORADOS
+  7: "https://pay.kiwify.com.br/R9cnfoZ", // CARRO
+  8: "https://pay.kiwify.com.br/eHObiIZ", // JUSTIÇA
+  9: "https://pay.kiwify.com.br/uxBRLdD", // EREMITA
+  10: "https://pay.kiwify.com.br/hMZ9ExB", // RODA DA FORTUNA
+  11: "https://pay.kiwify.com.br/thXCxL0", // FORÇA
+  12: "https://pay.kiwify.com.br/Unin56N", // ENFORCADO (Pendurado)
+  13: "https://pay.kiwify.com.br/XZUByEd", // MORTE
+  14: "https://pay.kiwify.com.br/QvosYul", // TEMPERANÇA
+  15: "https://pay.kiwify.com.br/zytmKdG", // DIABO
+  16: "https://pay.kiwify.com.br/IydySSM", // TORRE
+  17: "https://pay.kiwify.com.br/M8oQdM6", // ESTRELA
+  18: "https://pay.kiwify.com.br/kLrC5G3", // LUA
+  19: "https://pay.kiwify.com.br/S2yGUCt", // SOL
+  20: "https://pay.kiwify.com.br/L2pGKcO", // JULGAMENTO
+  21: "https://pay.kiwify.com.br/TvmLqXb", // MUNDO
+  22: "https://pay.kiwify.com.br/Ve4s4rB"  // LOUCO
 };
 
 // =========================
 /* Utilitários de número */
 // =========================
 function reduzirNumero(num) {
-  // Reduz até ficar entre 1 e 22
   while (num > totalArcanos) {
     num = num.toString().split("").reduce((a, d) => a + parseInt(d, 10), 0);
   }
-  // Evitar 0 por segurança (não deve acontecer com as regras atuais)
   if (num === 0) num = 22;
   return num;
 }
 
 function somaDigitos(strOuNum) {
-  return String(strOuNum)
-    .replace(/\D/g, "")
-    .split("")
-    .reduce((a, d) => a + parseInt(d, 10), 0);
+  return String(strOuNum).replace(/\D/g, "").split("").reduce((a, d) => a + parseInt(d, 10), 0);
 }
 
 // =========================
-/* Cálculo dos Arcanos (regras combinadas)
-   - Pessoal: soma de todos os dígitos de (dia, mes, ano) e reduz até <= 22
-   - Ascendente: dia do nascimento reduzido se > 22; se 22 fica 22
-   - Central:
-        somaAno = soma dos dígitos do ano reduzida até <= 22
-        diaCentral = dia reduzido até <= 22
-        mesCentral = mês reduzido até <= 22
-        central1 = diaCentral + mesCentral + somaAno (reduzido até <= 22)
-        central2 = diaCentral + mesCentral + somaAno + central1 (reduzido até <= 22)
-*/
+/* Cálculo dos Arcanos Principais e Complementares */
 // =========================
 function calcularArcanos(dia, mes, ano) {
-  // Arcano Pessoal
   const somaTudo = somaDigitos(String(dia) + String(mes) + String(ano));
-  console.log("Soma dos dígitos da data (Pessoal):", somaTudo);
   const arcanoPessoal = reduzirNumero(somaTudo);
-  console.log("Arcano Pessoal reduzido:", arcanoPessoal);
-
-  // Arcano Ascendente
-  console.log("Dia do nascimento (Ascendente, antes de reduzir):", dia);
   const arcanoAscendente = reduzirNumero(dia);
-  console.log("Arcano Ascendente reduzido:", arcanoAscendente);
-
-  // Soma dos dígitos do ano
   let somaAno = somaDigitos(ano);
-  console.log("Soma dos dígitos do ano (antes de reduzir):", somaAno);
   if (somaAno > 22) somaAno = reduzirNumero(somaAno);
-  console.log("Soma dos dígitos do ano (reduzida):", somaAno);
-
-  // Reduzir parcelas antes de somar (garantir <= 22)
   const diaCentral = reduzirNumero(dia);
   const mesCentral = reduzirNumero(mes);
-
-  // Primeira soma para o Central
   let central1 = diaCentral + mesCentral + somaAno;
-  console.log("Primeira soma para Arcano Central (dia+mes+somaAno):", central1);
   if (central1 > 22) central1 = reduzirNumero(central1);
-  console.log("Central1 reduzido:", central1);
-
-  // Segunda soma para o Central
   let central2 = diaCentral + mesCentral + somaAno + central1;
-  console.log("Segunda soma para Arcano Central (dia+mes+somaAno+central1):", central2);
   const arcanoCentral = reduzirNumero(central2);
-  console.log("Arcano Central reduzido:", arcanoCentral);
 
-  return {
-    pessoal: arcanoPessoal,
-    ascendente: arcanoAscendente,
-    central: arcanoCentral
-  };
+  return { pessoal: arcanoPessoal, ascendente: arcanoAscendente, central: arcanoCentral };
+}
+
+function calcularComplementares(pessoal) {
+  if (pessoal < 10) return [];
+  if (pessoal === 19) return [10, 1];
+  const soma = String(pessoal).split('').reduce((acc, digito) => acc + parseInt(digito, 10), 0);
+  return [soma];
 }
 
 // =========================
-// Confete (borboletinha/estrelinha)
-// =========================
-function gerarConfeteIntensivo() {
-  const container = document.getElementById("cartasConfete");
-  if (!container) return;
-  container.innerHTML = '';
-
-  const imagensConfete = ["borboletinha.png", "estrelinha.png"];
-
-  for (let i = 0; i < 170; i++) {
-    const img = document.createElement("img");
-    const idx = i % 2; // alterna 0/1
-    img.src = `${pastaImagens}${imagensConfete[idx]}`;
-
-    img.className = 'confete';
-    img.style.left = Math.random() * 100 + 'vw';
-    img.style.top = Math.random() * -20 + 'vh';
-    img.style.width = (20 + Math.random() * 30) + 'px';
-    img.style.opacity = (0.4 + Math.random() * 0.6);
-    img.style.animationDuration = (3 + Math.random() * 5) + 's';
-    img.style.transform = `rotate(${Math.random() * 360}deg)`;
-    container.appendChild(img);
-  }
-}
-
-function removerConfete() {
-  const container = document.getElementById("cartasConfete");
-  if (container) container.innerHTML = '';
-}
-
-// =========================
-// Flip: revelar carta ao clicar no verso
+// Flip: revelar carta 
 // =========================
 function ativarFlip(cardId) {
   const card = document.getElementById(cardId);
@@ -143,122 +88,206 @@ function ativarFlip(cardId) {
   const backImg = card.querySelector(".flip-back img");
   const sound = document.getElementById("flip-sound");
 
-  // ADICIONADO: mapear card -> elemento de texto correspondente
   const idTextoMap = {
-    cardPessoal: 'arcanoPessoal',
-    cardAscendente: 'arcanoAscendente',
-    cardCentral: 'arcanoCentral'
+    cardPessoal: 'arcanoPessoal', cardComplementar1: 'arcanoComplementar1', cardComplementar2: 'arcanoComplementar2'  
   };
   const txtEl = document.getElementById(idTextoMap[cardId]);
-  // FIM ADICIONADO
 
   if (!backImg) return;
 
   const handleClick = () => {
     card.classList.add("flipped");
     if (sound) {
-      try {
-        sound.currentTime = 0;
-        sound.play();
-      } catch (e) { /* ignore */ }
+      try { sound.currentTime = 0; sound.play(); } catch (e) { }
     }
-
-    // ADICIONADO: ao virar, revelar o texto salvo no dataset.final
     if (txtEl && txtEl.dataset && txtEl.dataset.final) {
       txtEl.textContent = txtEl.dataset.final;
     }
-    // FIM ADICIONADO
 
-    // Evita "desvirar": remove o listener após a primeira virada
+    // ========================================================
+    // REVELA A OFERTA (CTA) QUANDO A CARTA FOR VIRADA
+    // ========================================================
+    const cta = document.getElementById("call-to-action");
+    if (cta && cta.classList.contains("cta-oculto")) {
+        // Espera 500ms (o tempo da carta estar no meio do giro) para revelar o texto de baixo
+        setTimeout(() => {
+            cta.classList.remove("cta-oculto");
+            cta.classList.add("cta-animado");
+        }, 500); 
+    }
+
     backImg.removeEventListener("click", handleClick);
   };
-
   backImg.addEventListener("click", handleClick);
 }
 
 // =========================
-// Evento do formulário (IDs do seu index base)
+// Evento do formulário e Animação de Carregamento Suave
 // =========================
 const form = document.getElementById("tarotForm");
 if (form) {
   form.addEventListener("submit", function (e) {
     e.preventDefault();
 
-    const nome = document.getElementById("nome")?.value.trim();
+    const nomeCompleto = document.getElementById("nome")?.value.trim();
     const data = document.getElementById("data")?.value;
-    if (!nome || !data) return;
+    if (!nomeCompleto || !data) return;
+    
+    // Pega apenas o primeiro nome para ficar mais amigável no texto de vendas
+    const nomePrimeiro = nomeCompleto.split(" ")[0];
+
+    // ========================================================
+    // DISPARA O EVENTO DE LEAD NO PIXEL DO FACEBOOK
+    // ========================================================
+    if (typeof fbq === 'function') {
+      fbq('track', 'Lead');
+    }
 
     const [dia, mes, ano] = data.split("/").map(Number);
-
     const arcanos = calcularArcanos(dia, mes, ano);
+    const complementares = calcularComplementares(arcanos.pessoal);
 
-    gerarConfeteIntensivo();
+    // Esconde o form E O TEXTO para dar espaço limpo
+    const inputNome = document.getElementById("nome");
+    const inputData = document.getElementById("data");
+    const btnSubmit = form.querySelector("button[type='submit']");
+    const textoSubtitulo = document.querySelector(".container > p"); 
+    
+    if (inputNome) inputNome.style.display = "none";
+    if (inputData) inputData.style.display = "none";
+    if (btnSubmit) btnSubmit.style.display = "none";
+    if (textoSubtitulo) textoSubtitulo.style.display = "none"; 
 
+    // 1. Inicia o GIF com Fade-in
+    const loadingScreen = document.getElementById("loading-screen");
+    const progressBar = document.getElementById("progress-bar");
+    const progressText = document.getElementById("progress-text");
+    
+    loadingScreen.classList.remove("hidden"); 
+    
+    void loadingScreen.offsetWidth; 
+    loadingScreen.classList.add("visible"); 
+    
+    let progress = 0;
+    const duration = 7000; 
+    const intervalTime = 50; 
+    const step = (100 / (duration / intervalTime));
+
+    const progressInterval = setInterval(() => {
+        progress += step;
+        if (progress >= 100) {
+            progress = 100;
+            clearInterval(progressInterval);
+        }
+        progressBar.style.width = `${progress}%`;
+        progressText.textContent = `${Math.floor(progress)}%`;
+    }, intervalTime);
+
+    // 2. Transição final após 7 segundos
     setTimeout(() => {
-      removerConfete();
+      // Inicia o Fade-out do GIF
+      loadingScreen.classList.remove("visible");
 
-      // Atualiza imagens com 01..22.png
-      const imgP = document.getElementById("imgPessoal");
-      const imgA = document.getElementById("imgAscendente");
-      const imgC = document.getElementById("imgCentral");
+      // Espera 800ms (tempo do CSS) pro GIF sumir e então monta a tela de resultado
+      setTimeout(() => {
+          loadingScreen.classList.add("hidden"); 
 
-      if (imgP) imgP.src = `${pastaImagens}${String(arcanos.pessoal).padStart(2, '0')}.png`;
-      if (imgA) imgA.src = `${pastaImagens}${String(arcanos.ascendente).padStart(2, '0')}.png`;
-      if (imgC) imgC.src = `${pastaImagens}${String(arcanos.central).padStart(2, '0')}.png`;
+          // Prepara os textos e imagens das cartas
+          const imgP = document.getElementById("imgPessoal");
+          const txtP = document.getElementById("arcanoPessoal");
+          if (imgP) imgP.src = `${pastaImagens}${String(arcanos.pessoal).padStart(2, '0')}.png`;
+          if (txtP) { 
+              txtP.textContent = `Arcano Pessoal: ${arcanos.pessoal} [${nomesArcanos[arcanos.pessoal]}]`;
+              txtP.dataset.final = txtP.textContent; 
+              txtP.textContent = "*************"; 
+          }
+          ativarFlip("cardPessoal");
 
-      // Atualiza textos: número + [nome]
-      const txtP = document.getElementById("arcanoPessoal");
-      const txtA = document.getElementById("arcanoAscendente");
-      const txtC = document.getElementById("arcanoCentral");
+          const boxC1 = document.getElementById("boxComplementar1");
+          const boxC2 = document.getElementById("boxComplementar2");
+          if (boxC1) boxC1.classList.add("hidden");
+          if (boxC2) boxC2.classList.add("hidden");
 
-      if (txtP) txtP.textContent = `Arcano Pessoal: ${arcanos.pessoal} [${nomesArcanos[arcanos.pessoal]}]`;
-      if (txtA) txtA.textContent = `Arcano Ascendente: ${arcanos.ascendente} [${nomesArcanos[arcanos.ascendente]}]`;
-      if (txtC) txtC.textContent = `Arcano Central: ${arcanos.central} [${nomesArcanos[arcanos.central]}]`;
+          if (complementares.length > 0) {
+              boxC1.classList.remove("hidden");
+              const imgC1 = document.getElementById("imgComplementar1");
+              const txtC1 = document.getElementById("arcanoComplementar1");
+              if (imgC1) imgC1.src = `${pastaImagens}${String(complementares[0]).padStart(2, '0')}.png`;
+              if (txtC1) {
+                  txtC1.textContent = `Arcano Complementar: ${complementares[0]} [${nomesArcanos[complementares[0]]}]`;
+                  txtC1.dataset.final = txtC1.textContent;
+                  txtC1.textContent = "*************";
+              }
+              ativarFlip("cardComplementar1");
+          }
 
-      // ADICIONADO: guardar o texto final e mascarar com ************* até virar
-      if (txtP) { txtP.dataset.final = txtP.textContent; txtP.textContent = "*************"; }
-      if (txtA) { txtA.dataset.final = txtA.textContent; txtA.textContent = "*************"; }
-      if (txtC) { txtC.dataset.final = txtC.textContent; txtC.textContent = "*************"; }
-      // FIM ADICIONADO
+          if (complementares.length > 1) {
+              boxC2.classList.remove("hidden");
+              const imgC2 = document.getElementById("imgComplementar2");
+              const txtC2 = document.getElementById("arcanoComplementar2");
+              if (imgC2) imgC2.src = `${pastaImagens}${String(complementares[1]).padStart(2, '0')}.png`;
+              if (txtC2) {
+                  txtC2.textContent = `2º Arcano Complementar: ${complementares[1]} [${nomesArcanos[complementares[1]]}]`;
+                  txtC2.dataset.final = txtC2.textContent;
+                  txtC2.textContent = "*************";
+              }
+              ativarFlip("cardComplementar2");
+          }
+          
+          // ========================================================
+          // INJEÇÃO DAS VARIÁVEIS DINÂMICAS NO TEXTO DO CTA
+          // ========================================================
+          const spanNomePessoa = document.getElementById("span-nome-pessoa");
+          const spanNomeArcano = document.getElementById("span-nome-arcano");
+          
+          if (spanNomePessoa) {
+              spanNomePessoa.textContent = nomePrimeiro;
+          }
+          if (spanNomeArcano) {
+              spanNomeArcano.textContent = nomesArcanos[arcanos.pessoal];
+          }
 
-      // Revelar seção de resultado
-      document.getElementById("resultado")?.classList.remove("hidden");
+          // Prepara o Mockup
+          const numeroImagem = arcanos.pessoal === 22 ? 0 : arcanos.pessoal;
+          const imgMockup = document.getElementById("mockup-ebook");
+          if (imgMockup) imgMockup.src = `${pastaImagens}M${numeroImagem}.png`;
 
-      // 👉 Novo: esconder inputs e transformar botão em "Refazer"
-      document.getElementById("nome").style.display = "none";
-      document.getElementById("data").style.display = "none";
-      document.getElementById("number").style.display = "none";
+          const btnCompra = document.getElementById("btn-compra");
+          if (btnCompra) {
+              const linkCheckout = linksKiwify[arcanos.pessoal] || "#"; 
+              btnCompra.onclick = () => { window.location.href = linkCheckout; };
+          }
 
-      const btn = form.querySelector("button[type='submit']");
-      if (btn) {
-        btn.textContent = "Refazer";
-        btn.onclick = () => { window.location.href = "index.html"; };
-      }
+          // Refaz o botão de Submit
+          if (btnSubmit) {
+            btnSubmit.textContent = "Refazer";
+            btnSubmit.style.display = "block";
+            btnSubmit.onclick = () => { window.location.href = "index.html"; };
+          }
 
-      // Ativar flip ao clicar no verso de cada carta
-      ativarFlip("cardPessoal");
-      ativarFlip("cardAscendente");
-      ativarFlip("cardCentral");
-    }, 3000);
+          // FINALMENTE: Faz o Fade-in maravilhoso do resultado
+          const resultado = document.getElementById("resultado");
+          resultado.classList.remove("hidden");
+          
+          void resultado.offsetWidth; 
+          resultado.classList.add("visible"); 
+
+      }, 800); 
+
+    }, duration); 
   });
-} else {
-  console.warn('Formulário "tarotForm" não encontrado no DOM.');
 }
 
-// Máscara para data (dd/mm/aaaa)
+// Máscara para data
 const inputData = document.getElementById("data");
 if (inputData) {
   inputData.addEventListener("input", function (e) {
-    let v = e.target.value.replace(/\D/g, ""); // remove tudo que não for número
-    if (v.length > 8) v = v.slice(0, 8); // limita a 8 dígitos
+    let v = e.target.value.replace(/\D/g, ""); 
+    if (v.length > 8) v = v.slice(0, 8); 
     let formatado = "";
-    if (v.length > 4) {
-      formatado = v.replace(/(\d{2})(\d{2})(\d{0,4})/, "$1/$2/$3");
-    } else if (v.length > 2) {
-      formatado = v.replace(/(\d{2})(\d{0,2})/, "$1/$2");
-    } else {
-      formatado = v;
-    }
+    if (v.length > 4) { formatado = v.replace(/(\d{2})(\d{2})(\d{0,4})/, "$1/$2/$3"); } 
+    else if (v.length > 2) { formatado = v.replace(/(\d{2})(\d{0,2})/, "$1/$2"); } 
+    else { formatado = v; }
     e.target.value = formatado;
   });
 }
